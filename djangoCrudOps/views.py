@@ -12,10 +12,10 @@ def home(request):
 
 def insertData(request):
     if request.method == 'POST':
-        name = request.POST.get("")
-        email = request.POST.get("")
-        age = request.POST.get("")
-        gender = request.POST.get("")
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        age = request.POST.get("age")
+        gender = request.POST.get("gender")
         query = Student(name=name, email=email, age=age, gender=gender)
         query.save()
         return redirect('/')
@@ -24,10 +24,10 @@ def insertData(request):
 
 def updateData(request, id):
     if request.method == 'POST':
-        name = request.POST.get("")
-        email = request.POST.get("")
-        age = request.POST.get("")
-        gender = request.POST.get("")
+        name = request.POST.get("name")
+        email = request.POST.get("email")
+        age = request.POST.get("age")
+        gender = request.POST.get("gender")
 
         edit = Student.objects.get(id=id)
         edit.name = name
@@ -40,8 +40,37 @@ def updateData(request, id):
         d = Student.objects.get(id=id)
         return render(request, 'index.html', {'d': d})
 
+
 def deleteData(request, id):
     d = Student.objects.get(id=id)
     d.delete()
     return redirect('/')
-    return render(request, 'index.html')
+
+
+def handlesignup(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        myuser = User.objects.create_user(username, password)
+        myuser.save()
+    return render(request, 'signup.html')
+
+
+def handlelogin(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        myuser = authenticate(username=username, password=password)
+
+        if myuser is not None:
+            login(request, myuser)
+            return redirect('/')
+        else:
+            return redirect('/login')
+    return render(request, 'login.html')
+
+
+def handlelogout(request):
+    logout(request)
+    return redirect('/')  # Redirect to the homepage or another appropriate page

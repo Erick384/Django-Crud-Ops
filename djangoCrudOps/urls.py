@@ -22,6 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='index'),
     path('insert', views.insertData, name='insertData'),
-    path('update/<id>', views.updateData, name='updateData'),
-    path('delete/<id>', views.deleteData, name='deleteData'),
+    path('update/<int:id>/', views.updateData, name='updateData'),  # Added "int:id" to capture the ID as an integer.
+    path('delete/<int:id>/', views.deleteData, name='deleteData'),  # Added "int:id" to capture the ID as an integer.
+
+    path('login', views.handlelogin, name='handlelogin'),  # Corrected the name parameter.
+    path('logout', views.handlelogout, name='handlelogout'),  # Corrected the name parameter.
+    path('signup', views.handlesignup, name='handlesignup')  # Corrected the name parameter.
 ]
